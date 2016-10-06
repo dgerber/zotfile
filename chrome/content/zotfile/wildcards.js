@@ -227,6 +227,7 @@ Zotero.ZotFile.Wildcards = new function() {
         function replaceObjectWildcard(item, w){
             var field,
                 operations,
+                multipart,      // date fields: start with formatted date
                 output;
 
             if(typeof(w)=='string'){
@@ -237,13 +238,14 @@ Zotero.ZotFile.Wildcards = new function() {
                     : (item_type_name in w) ? w[item_type_name]
                     : w.default;
                 operations = w.operations
+                multipart = w.multipart
             }
 
             if (typeof(field)=='string'){
                 if (field=='BBTCiteKey' && Zotero.BetterBibTeX){
                     output = Zotero.BetterBibTeX.keymanager.get(item).citekey
                 } else {
-                    output = (field in addFields) ? addFields[field] : item.getField(field, false, true);
+                    output = (field in addFields) ? addFields[field] : item.getField(field, multipart, true);
                 }
             } else {
                 output = replaceObjectWildcard(item, field)
